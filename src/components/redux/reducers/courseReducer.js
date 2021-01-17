@@ -12,10 +12,9 @@ export default function couseReducer(state = [], action) {
       state = [...state, { ...action.course }];
       return state;
     case "UPDATE_COURSES_SUCCESS":
-      state.map((course) =>
-        course.id === action.course ? action.course : course
+      return state.map((course) =>
+        course.id === action.course.id ? action.course : course
       );
-      return action.course;
     default:
       return state;
   }

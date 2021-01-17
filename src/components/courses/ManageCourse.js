@@ -60,10 +60,20 @@ ManageCourse.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = function (state) {
+const getCourseById = (course, id) => {
+  console.log(course);
+  return course.find((c) => c.id == parseInt(id));
+};
+
+const mapStateToProps = function (state, ownProps) {
   console.log("in map state to props");
+  const id = ownProps.match.params.id;
+  debugger;
+  const course =
+    id && state.course.length > 0 ? getCourseById(state.course, id) : newCourse;
+  console.log(course);
   return {
-    newCourseData: newCourse,
+    newCourseData: course,
     course: state.course,
     authors: state.authors,
   };
