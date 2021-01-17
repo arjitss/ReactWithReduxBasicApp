@@ -6,6 +6,8 @@ This package consists of good example of
 2. how to setup redux (with action and reducers)
 3. how to setup mock api for test
 4. What is best practise to call APIs from frontend app
+5. Once a redux setup is done, how to modify it to add new component
+6. how to add centralized general handlers (imp) to handle similar events
 
 ## Get Started
 
