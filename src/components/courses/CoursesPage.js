@@ -5,9 +5,12 @@ import * as authorActions from "../redux/actions/authorActions";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import CourseList from "./CourseList";
+import Spinner from "../common/Spinner";
 
 const CoursesPage = (props) => {
   const [title, setTitle] = useState({ course: { title: "" } });
+  // Way 1 to display spinner using internal state
+  const [apiLoading, setApiLoading] = useState(0);
 
   useEffect(() => {
     if (props.course.length === 0) {
@@ -16,9 +19,14 @@ const CoursesPage = (props) => {
       });
     }
 
-    props.action.loadAuthors().catch((error) => {
-      alert("Error author", error);
-    });
+    props.action
+      .loadAuthors()
+      .then(() => {
+        setApiLoading(1);
+      })
+      .catch((error) => {
+        alert("Error author", error);
+      });
   }, []);
 
   const handleChange = (e) => {
@@ -36,17 +44,23 @@ const CoursesPage = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Course</h2>
-      <h3>Add Courses</h3>
-      <input
-        type="text"
-        onChange={handleChange}
-        value={title.course.title}
-      ></input>
-      <input type="submit" value="Save"></input>
-      {/* {props.course.map((cour) => (
+      {apiLoading === 0 ? (
+        <Spinner />
+      ) : (
+        <>
+          <h3>Add Courses</h3>
+          <input
+            type="text"
+            onChange={handleChange}
+            value={title.course.title}
+          ></input>
+          <input type="submit" value="Save"></input>
+          {/* {props.course.map((cour) => (
         <div key={cour.title}>{cour.title}</div>
       ))} */}
-      <CourseList courses={props.course} authors={props.authors} />
+          <CourseList courses={props.course} authors={props.authors} />
+        </>
+      )}
     </form>
   );
 };
