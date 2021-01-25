@@ -44,23 +44,26 @@ const CoursesPage = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Course</h2>
-      {apiLoading === 0 ? (
-        <Spinner />
-      ) : (
-        <>
-          <h3>Add Courses</h3>
-          <input
-            type="text"
-            onChange={handleChange}
-            value={title.course.title}
-          ></input>
-          <input type="submit" value="Save"></input>
-          {/* {props.course.map((cour) => (
+      {
+        /*apiLoading === 0*/ // if using local state to identify api callls in progress
+        props.loading ? ( // if using redux state to identify api callls in progress
+          <Spinner />
+        ) : (
+          <>
+            <h3>Add Courses</h3>
+            <input
+              type="text"
+              onChange={handleChange}
+              value={title.course.title}
+            ></input>
+            <input type="submit" value="Save"></input>
+            {/* {props.course.map((cour) => (
         <div key={cour.title}>{cour.title}</div>
       ))} */}
-          <CourseList courses={props.course} authors={props.authors} />
-        </>
-      )}
+            <CourseList courses={props.course} authors={props.authors} />
+          </>
+        )
+      }
     </form>
   );
 };
@@ -69,6 +72,7 @@ CoursesPage.propTypes = {
   action: PropTypes.object.isRequired,
   course: PropTypes.array.isRequired,
   authors: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = function (state) {
@@ -85,6 +89,8 @@ const mapStateToProps = function (state) {
             };
           }),
     authors: state.authors,
+    loading: state.apiCallsInProgress ? true : false,
+    apiCallsInProgress: state.apiCallsInProgress,
   };
 };
 
