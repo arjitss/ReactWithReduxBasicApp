@@ -9,7 +9,7 @@ import { newCourse } from "../../../tools/mockData";
 import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
 
-const ManageCourse = (props) => {
+export const ManageCourse = (props) => {
   const [courseData, setCourse] = useState({ ...props.newCourseData });
   const [errorData, setError] = useState({ ...props.newCourseData });
   const [saving, setSaving] = useState(false);
@@ -38,10 +38,11 @@ const ManageCourse = (props) => {
         alert("Error course", error);
       });
     }
-
-    props.action.loadAuthors().catch((error) => {
-      alert("Error author", error);
-    });
+    if (props.authors.length === 0) {
+      props.action.loadAuthors().catch((error) => {
+        alert("Error author", error);
+      });
+    }
   }, []);
 
   return (
