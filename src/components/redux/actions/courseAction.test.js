@@ -28,7 +28,7 @@ describe("Testing Thunks - Async Actions", () => {
 
     // Act
     const store = mockStore({ courses: [] });
-    store
+    return store
       .dispatch(CourseActions.loadCourses()) //this is action to be tested
       .then(() => {
         // Assert
