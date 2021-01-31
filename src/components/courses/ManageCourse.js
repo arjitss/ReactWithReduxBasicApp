@@ -6,10 +6,13 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import CourseForm from "./CourseForm";
 import { newCourse } from "../../../tools/mockData";
+import Spinner from "../common/Spinner";
+import { toast } from "react-toastify";
 
 const ManageCourse = (props) => {
   const [courseData, setCourse] = useState({ ...props.newCourseData });
   const [errorData, setError] = useState({ ...props.newCourseData });
+  const [saving, setSaving] = useState(false);
 
   function handleChange(event) {
     console.log("in handle chnage of manage course");
@@ -21,8 +24,10 @@ const ManageCourse = (props) => {
   }
 
   function handleSave(event) {
+    setSaving(true);
     event.preventDefault();
     props.action.saveCourses(courseData).then(() => {
+      toast.success("Course Saved...!!!");
       props.history.push("/courses"); // passed by react router automatically
     });
   }
@@ -47,6 +52,7 @@ const ManageCourse = (props) => {
         errors={errorData}
         onChange={handleChange}
         onSave={handleSave}
+        saving={saving}
       />
     </>
   );

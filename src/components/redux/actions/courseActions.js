@@ -1,4 +1,5 @@
 import * as courseApi from "../../../api/courseApi";
+import { beginAPIcall, endAPICall } from "./beginAPIcall";
 
 export function createCourse(course) {
   debugger;
@@ -19,20 +20,23 @@ export function updateCoursesSuccess(course) {
 }
 
 export function loadCourses() {
-  return function (dispatch) {
+  return function (dispatch, getState) {
+    dispatch(beginAPIcall());
     return courseApi
       .getCourses()
       .then((courses) => {
         dispatch(loadCoursesSuccess(courses));
       })
       .catch((error) => {
+        dispatch(endAPICall());
         throw error;
       });
   };
 }
 
 export function saveCourses(courseData) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
+    dispatch(beginAPIcall());
     return courseApi
       .saveCourse(courseData)
       .then((savedcourses) => {
@@ -41,6 +45,7 @@ export function saveCourses(courseData) {
           : dispatch(createCoursesSuccess(savedcourses));
       })
       .catch((error) => {
+        dispatch(endAPICall());
         throw error;
       });
   };
